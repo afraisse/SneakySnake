@@ -42,13 +42,32 @@ public class GameProgram extends Displayable implements EventHandler {
 			snake.add(new Rect(screenWdt/2 -i*rectSize, screenHgt/2));
 		}
 		
+		currentDir = Dir.DROITE;
+		
 		Timer t = new Timer();
 		t.schedule(new TimerTask() {
 			
 			@Override
 			public void run() {
 				Rect head = snake.get(0);
-				snake.add(0, new Rect(head.x+rectSize, head.y));
+				Rect next = null;
+				switch (currentDir) {
+				case Dir.DROITE:
+					next = new Rect(head.x + rectSize, head.y);
+					break;
+				case Dir.GAUCHE:
+					next = new Rect(head.x - rectSize, head.y);
+					break;
+				case Dir.HAUT:
+					next = new Rect(head.x, head.y - rectSize);
+					break;
+				case Dir.BAS:
+					next = new Rect(head.x, head.y + rectSize);
+					break;
+				default: break;
+				}
+				
+				snake.add(0, next);
 				snake.remove(snake.size()-1);
 				repaint();
 			}
@@ -89,10 +108,10 @@ public class GameProgram extends Displayable implements EventHandler {
 			if(Pointer.isPressed(event) || Pointer.isDragged(event))
 			{
 				Pointer ptr= (Pointer)Event.getGenerator(event);
-				if(ptr.getX() >= (height/2)) 
-					currentDir = Dir.DROITE;
+				if(ptr.getX() >= (screenWdt/2)) 
+					changeDirection(true);
 				else
-					currentDir = Dir.GAUCHE;
+					changeDirection(false);
 				return true;
 			}
 		}	
@@ -121,7 +140,7 @@ public class GameProgram extends Displayable implements EventHandler {
 			if(droite) currentDir = Dir.DROITE;
 			else currentDir = Dir.GAUCHE;
 			break;
-		default : break;
+		default : break; //breakdance 
 		}
 	}
 
