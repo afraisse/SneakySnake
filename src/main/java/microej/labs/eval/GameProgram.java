@@ -29,7 +29,7 @@ public class GameProgram extends Displayable implements EventHandler {
 		Rect rect = new Rect(width/2, height/2);
 		snake.add(rect);
 		for (int i = 1; i< length+1; i++) {
-			snake.add(new Rect(width/2 -i, height/2));
+			snake.add(new Rect(width/2 -i*rectSize, height/2));
 		}
 	}
 
