@@ -3,4 +3,5 @@ Application-Id: SneakySnake
 Application-Version: 0.1.0
 Application-PrintableName: SneakySnake
 Application-Description: SneakySnake
+Application-Activities: microej.labs.eval.GameActivity
 

@@ -1,5 +1,0 @@
-#Tue Jun 07 13:54:20 CEST 2016
-version=0.1.0
-name=SneakySnake
-types=java.util.logging.*,java.security.*,ej.components.*,ej.wadapps.management.*,ej.components.registry.util.*,ej.wadapps.standalone.*,ej.wadapps.registry.*,java.net.*,org.eclipse.core.runtime.*,ej.components.dependencyinjection.*,ej.wadapps.management.util.*,java.lang.*,ej.io.progress.*,android.net.*,ej.wadapps.registry.util.*,ej.wadapps.storage.kf.*,__SneakySnake__.generated.*,ej.components.registry.impl.*,java.io.*,java.lang.ref.*,ej.wadapps.storage.kf.local.*,ej.observable.*,java.lang.annotation.*,java.lang.reflect.*,ej.components.registry.*,properties.*,ej.kf.*,ej.wadapps.admin.*,ej.wadapps.storage.*,java.util.*,ej.wadapps.intern.*,ej.bon.*,ej.net.*,ej.wadapps.management.activators.*,ej.wadapps.app.*,ej.util.logging.handler.*
-entryPoint=__SneakySnake__.generated.SneakySnakeEntryPoint
