@@ -14,14 +14,14 @@ import ej.microui.event.generator.Pointer;
 import ej.microui.util.EventHandler;
 
 public class GameProgram extends Displayable implements EventHandler {
-	
+
 	int screenHgt;
 	int screenWdt;
-	
+
 	int canvasWdt;
 	int canvasHgt;
 	int currentDir;
-	int length = 4;
+	int length = 8;
 	int rectSize = 4;
 	List<Rect> snake;
 
@@ -32,7 +32,7 @@ public class GameProgram extends Displayable implements EventHandler {
 		screenWdt = disp.getWidth();
 		canvasWdt = screenWdt / rectSize;
 		canvasHgt = screenHgt / rectSize;
-		
+
 		snake = new ArrayList<Rect>();
 
 		// First rect
@@ -41,12 +41,12 @@ public class GameProgram extends Displayable implements EventHandler {
 		for (int i = 1; i< length+1; i++) {
 			snake.add(new Rect(screenWdt/2 -i*rectSize, screenHgt/2));
 		}
-		
+
 		currentDir = Dir.DROITE;
-		
+
 		Timer t = new Timer();
 		t.schedule(new TimerTask() {
-			
+
 			@Override
 			public void run() {
 				Rect head = snake.get(0);
@@ -66,13 +66,36 @@ public class GameProgram extends Displayable implements EventHandler {
 					break;
 				default: break;
 				}
-				
+
 				snake.add(0, next);
 				snake.remove(snake.size()-1);
+				if(isDead(next)) {
+					this.cancel();
+				}
+
 				repaint();
 			}
-		}, 0, 200);
+		}, 0, 100);
 	}
+
+	private boolean isDead(Rect next) {
+		boolean dead = false;
+		for(int i=1; i < snake.size(); ++i) {
+			dead = equality(next, snake.get(i));
+		}
+		dead = dead || outOfScreen(next);
+		System.out.println(dead);
+		return dead;
+	}
+	
+	private boolean outOfScreen(Rect next) {
+		return (next.x >= screenWdt || next.y >= screenHgt || next.y < 0 || next.x < 0);
+	}
+
+	private boolean equality(Rect a, Rect b) {
+		return (a.x == b.x && a.y == b.y);
+	}
+
 
 	//----------------------------------------------
 	//--------- Gestion du rafraichissement
@@ -82,7 +105,7 @@ public class GameProgram extends Displayable implements EventHandler {
 		// White background
 		g.setColor(Colors.WHITE);
 		g.fillRect(0, 0, screenWdt, screenHgt);	
-	
+
 		//Draw snake
 		g.setColor(Colors.BLACK);
 		for (Rect rect : snake) {
