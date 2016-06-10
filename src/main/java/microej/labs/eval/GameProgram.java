@@ -74,6 +74,7 @@ public class GameProgram extends Displayable implements EventHandler {
 					food = popRandomRect();
 				} else
 					snake.remove(snake.size()-1);
+				
 				if(isDead(next)) {
 					this.cancel();
 				}
