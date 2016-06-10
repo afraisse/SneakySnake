@@ -84,7 +84,6 @@ public class GameProgram extends Displayable implements EventHandler {
 			dead = equality(next, snake.get(i));
 		}
 		dead = dead || outOfScreen(next);
-		System.out.println(dead);
 		return dead;
 	}
 	
