@@ -18,37 +18,39 @@ public class GameProgram extends Displayable implements EventHandler {
 	int screenHgt;
 	int screenWdt;
 
-	int canvasWdt;
-	int canvasHgt;
 	int currentDir;
-	int length = 8;
-	int rectSize = 4;
+	int length = 4;
+	int rectSize = 12;
 	List<Rect> snake;
+	Rect food;
 
 	public GameProgram() {
 		super(Display.getDefaultDisplay());
 		Display disp = this.getDisplay();
 		screenHgt = disp.getHeight();
 		screenWdt = disp.getWidth();
-		canvasWdt = screenWdt / rectSize;
-		canvasHgt = screenHgt / rectSize;
 
 		snake = new ArrayList<Rect>();
 
-		// First rect
+		// Gen Snake
 		Rect rect = new Rect(screenWdt/2, screenHgt/2);
 		snake.add(rect);
 		for (int i = 1; i< length+1; i++) {
 			snake.add(new Rect(screenWdt/2 -i*rectSize, screenHgt/2));
 		}
 
+		// pop food
+		food = popRandomFood();
+		
+		
+		// Game routine
 		currentDir = Dir.DROITE;
-
 		Timer t = new Timer();
 		t.schedule(new TimerTask() {
 
 			@Override
 			public void run() {
+				// move snake
 				Rect head = snake.get(0);
 				Rect next = null;
 				switch (currentDir) {
@@ -66,16 +68,22 @@ public class GameProgram extends Displayable implements EventHandler {
 					break;
 				default: break;
 				}
-
 				snake.add(0, next);
-				snake.remove(snake.size()-1);
+
+				// If snake didn't got food, remove last rect
+				System.out.print("Snake : ("+next.x+","+next.y + ") - ");
+				System.out.println("Food : ("+food.x+","+food.y + ") - ");
+				if (next.x == food.x && next.y == food.y) {
+					food = popRandomFood();
+				} else
+					snake.remove(snake.size()-1);
 				if(isDead(next)) {
 					this.cancel();
 				}
 
 				repaint();
 			}
-		}, 0, 100);
+		}, 0, 1000);
 	}
 
 	private boolean isDead(Rect next) {
@@ -110,7 +118,16 @@ public class GameProgram extends Displayable implements EventHandler {
 		for (Rect rect : snake) {
 			g.drawRect(rect.x, rect.y, rectSize, rectSize);
 		}
-
+		
+		//Draw food
+		g.setColor(Colors.RED);
+		g.fillRect(food.x, food.y, rectSize+1, rectSize+1);
+	}
+	
+	private Rect popRandomFood() {
+		int x = (int) Math.floor(Math.random()*(screenWdt-rectSize));
+		int y = (int) Math.floor(Math.random()*(screenHgt-rectSize));
+		return new Rect(x, y);
 	}
 
 
