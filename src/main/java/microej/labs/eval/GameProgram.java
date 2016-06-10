@@ -31,16 +31,15 @@ public class GameProgram extends Displayable implements EventHandler {
 		screenWdt = disp.getWidth();
 
 		snake = new ArrayList<Rect>();
-
 		// Gen Snake
-		Rect rect = new Rect(screenWdt/2, screenHgt/2);
+		Rect rect = popRandomRect();
 		snake.add(rect);
 		for (int i = 1; i< length+1; i++) {
-			snake.add(new Rect(screenWdt/2 -i*rectSize, screenHgt/2));
+			snake.add(new Rect(rect.x-i*rectSize, rect.y));
 		}
 
 		// pop food
-		food = popRandomFood();
+		food = popRandomRect();
 		
 		
 		// Game routine
@@ -71,10 +70,8 @@ public class GameProgram extends Displayable implements EventHandler {
 				snake.add(0, next);
 
 				// If snake didn't got food, remove last rect
-				System.out.print("Snake : ("+next.x+","+next.y + ") - ");
-				System.out.println("Food : ("+food.x+","+food.y + ") - ");
 				if (next.x == food.x && next.y == food.y) {
-					food = popRandomFood();
+					food = popRandomRect();
 				} else
 					snake.remove(snake.size()-1);
 				if(isDead(next)) {
@@ -83,7 +80,7 @@ public class GameProgram extends Displayable implements EventHandler {
 
 				repaint();
 			}
-		}, 0, 1000);
+		}, 0, 400);
 	}
 
 	private boolean isDead(Rect next) {
@@ -124,9 +121,13 @@ public class GameProgram extends Displayable implements EventHandler {
 		g.fillRect(food.x, food.y, rectSize+1, rectSize+1);
 	}
 	
-	private Rect popRandomFood() {
+	private Rect popRandomRect() {
 		int x = (int) Math.floor(Math.random()*(screenWdt-rectSize));
 		int y = (int) Math.floor(Math.random()*(screenHgt-rectSize));
+		
+		// Correction modulo rectsize
+		x = x - (x % rectSize);
+		y = y - (y % rectSize);
 		return new Rect(x, y);
 	}
 
